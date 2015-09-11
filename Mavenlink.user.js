@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mavenlink
 // @namespace    http://your.homepage/
-// @version      0.1
+// @version      0.2
 // @updateURL    https://github.com/neilgaietto/UserScripts/raw/master/Mavenlink.user.js
 // @description  enter something useful
 // @author       You
