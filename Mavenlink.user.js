@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Mavenlink
 // @namespace    http://your.homepage/
-// @version      0.4
+// @version      0.4.1
 // @updateURL    https://github.com/neilgaietto/UserScripts/raw/master/Mavenlink.user.js
 // @description  ABT Mavenlink Script
 // @author       ABT
@@ -54,18 +54,22 @@ var init = function () {
 
     // Project > Task Tracker
     if (params.tab === "local-tracker") {
-        // expand all
-        $(document).ajaxComplete(function (event, xhr, settings) {
-            // milestone clicked
-            $('.row-wrapper > .rows > .row').on('click', function () {
-                milestoneIndex = $(this).index();
-                milestone = $('.row-wrapper > .rows > .row')[milestoneIndex];
-            })
+        if(!loaded) {
+            // expand all
+            $(document).ajaxComplete(function (event, xhr, settings) {
+                // milestone clicked
+                $('.row-wrapper > .rows > .row').on('click', function () {
+                    milestoneIndex = $(this).index();
+                    milestone = $('.row-wrapper > .rows > .row')[milestoneIndex];
+                })
 
-            $(milestone).find('.toggler.substory-toggle:not(.expanded):not(.working):not(.invisible)').each(function () {
-                $(this).addClass('working').click();
+                $(milestone).find('.toggler.substory-toggle:not(.expanded):not(.working):not(.invisible)').each(function () {
+                    $(this).addClass('working').click();
+                });
             });
-        });
+
+            loaded = true;
+        }
     }
 };
 
