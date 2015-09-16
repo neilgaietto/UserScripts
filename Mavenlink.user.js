@@ -5,6 +5,7 @@
 // @description  ABT Mavenlink Script
 // @author       ABT
 // @match        https://atlanticbt.mavenlink.com/*
+// @grant        none
 // ==/UserScript==
 
 // functions
