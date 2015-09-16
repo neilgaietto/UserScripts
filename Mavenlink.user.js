@@ -1,45 +1,59 @@
 // ==UserScript==
 // @name         Mavenlink
-// @namespace    http://your.homepage/
-// @version      0.4.1
+// @version      0.4.2
 // @updateURL    https://github.com/neilgaietto/UserScripts/raw/master/Mavenlink.user.js
 // @description  ABT Mavenlink Script
 // @author       ABT
 // @match        https://atlanticbt.mavenlink.com/*
-// @grant        none
 // ==/UserScript==
 
 // functions
 var getQueryParameters = function (str) {
     return (str || document.location.search).replace(/(^\?)/, '').split("&").map(function (n) { return n = n.split("="), this[n[0]] = n[1], this }.bind({}))[0];
 };
+
+var initYourTasksView = function () {
+    // remove pto tasks
+    var ptoTasks = $('tr[data-story-id=96718717], tr[data-story-id=96718727]');
+    ptoTasks.remove();
+
+    // remove milestones
+    $('tr.milestone').remove();
+
+    // hightlight tasks
+    $('.task.substory').css('background-color', 'lightcyan');
+
+    // add Type
+    if ($('.task-tracker table thead tr:contains("Type")').length === 0) {
+        $('.task-tracker table thead tr').append("<th class=\"assignees\" data-column=\"6\" tabindex=\"0\" scope=\"col\" role=\"columnheader\" aria-disabled=\"false\" unselectable=\"on\" aria-sort=\"none\" style=\"-webkit-user-select: none;\"><div class=\"tablesorter-header-inner\">Type</div></th>")
+
+        $('.task-tracker table tbody').find('tr').each(function () {
+            var classNames = $(this).attr('class').split(" ");
+            var taskType = classNames[0];
+
+            $(this).append("<td class=\"due-date\">" + taskType + "</td>");
+        })
+    }
+};
+
+var updateYourTasksView = function() {
+    $('.task-tracker table tbody').find('tr').each(function() {
+        if($(this).find('td').length === 6) {
+            var classNames = $(this).attr('class').split(" ");
+            var taskType = classNames[0];
+
+            $(this).append("<td class=\"due-date\">" + taskType + "</td>");
+        }
+    });
+};
+
 var init = function () {
     // reset vars
     params = getQueryParameters(window.location.search);
 
     // Tasks > Your Tasks
     if (window.location.href === "https://atlanticbt.mavenlink.com/stories#upcoming?assignedToYou=true") {
-        // remove pto tasks
-        var ptoTasks = $('tr[data-story-id=96718717], tr[data-story-id=96718727]');
-        ptoTasks.remove();
-
-        // remove milestones
-        $('tr.milestone').remove();
-
-        // hightlight tasks
-        $('.task.substory').css('background-color', 'lightcyan');
-
-        // add Type
-        if ($('.task-tracker table thead tr:contains("Type")').length === 0) {
-            $('.task-tracker table thead tr').append("<th class=\"assignees\" data-column=\"6\" tabindex=\"0\" scope=\"col\" role=\"columnheader\" aria-disabled=\"false\" unselectable=\"on\" aria-sort=\"none\" style=\"-webkit-user-select: none;\"><div class=\"tablesorter-header-inner\">Type</div></th>")
-
-            $('.task-tracker table tbody').find('tr').each(function () {
-                var classNames = $(this).attr('class').split(" ");
-                var taskType = classNames[0];
-
-                $(this).append("<td class=\"due-date\">" + taskType + "</td>");
-            })
-        }
+        initYourTasksView();
 
         // add table sort, http://mottie.github.io/tablesorter/docs/index.html
         if (!loaded) {
@@ -50,6 +64,10 @@ var init = function () {
             });
             loaded = true;
         }
+
+        $(document).ajaxComplete(function (event, xhr, settings) {
+            updateYourTasksView();
+        });
     }
 
     // Project > Task Tracker
