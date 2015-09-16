@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Mavenlink
-// @version      0.4.3
+// @version      0.4.4
 // @updateURL    https://github.com/neilgaietto/UserScripts/raw/master/Mavenlink.user.js
 // @description  ABT Mavenlink Script
 // @author       ABT
@@ -49,7 +49,9 @@ var updateYourTasksView = function() {
 };
 
 var updateTasksMenuItem = function() {
-	$('.navigation-application .link.tasks.application-link.current-location a.outer-link').attr('href','/stories#upcoming?assignedToYou=true');
+	var lnk = $('.navigation-application .link.tasks.application-link a.outer-link');
+	lnk.attr('href','/stories#upcoming?assignedToYou=true');
+	lnk.find('span.nav-link-text').text('Your Tasks');
 };
 
 var init = function () {
