@@ -54,6 +54,10 @@ var updateTasksMenuItem = function() {
 	lnk.find('span.nav-link-text').text('Your Tasks');
 };
 
+var expandableDescriptionTextbox = function() {
+ $('.task-tracker .detail-layout .view .story-details .left .section.description .story-description textarea').css('resize','both');
+}
+
 var init = function () {
     // reset vars
     params = getQueryParameters(window.location.search);
@@ -99,6 +103,9 @@ var init = function () {
 
 	//Update Tasks link to My Tasks
 	updateTasksMenuItem();
+	
+	//Make description textboxes expandable
+	expandableDescriptionTextbox();
 };
 
 // vars
