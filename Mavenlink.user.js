@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Mavenlink
-// @version      0.4.4
+// @version      0.4.5
 // @updateURL    https://github.com/neilgaietto/UserScripts/raw/master/Mavenlink.user.js
 // @description  ABT Mavenlink Script
 // @author       ABT
@@ -88,7 +88,7 @@ var init = function () {
                     milestone = $('.row-wrapper > .rows > .row')[milestoneIndex];
                 })
 
-                $(milestone).find('.toggler.substory-toggle:not(.expanded):not(.working):not(.invisible)').each(function () {
+                $(milestone).children('ul.substory-rows').children('li:has(div[data-status][data-status!=completed])').find('.toggler.substory-toggle:not(.expanded):not(.working):not(.invisible)').each(function () {
                     $(this).addClass('working').click();
                 });
             });
@@ -96,7 +96,7 @@ var init = function () {
             loaded = true;
         }
     }
-	
+
 	//Update Tasks link to My Tasks
 	updateTasksMenuItem();
 };
