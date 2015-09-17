@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Mavenlink
-// @version      0.4.6
+// @version      0.4.7
 // @updateURL    https://github.com/neilgaietto/UserScripts/raw/master/Mavenlink.user.js
 // @description  ABT Mavenlink Script
 // @author       ABT
@@ -103,7 +103,7 @@ var init = function () {
 
 	//Update Tasks link to My Tasks
 	updateTasksMenuItem();
-	
+
 	//Make description textboxes expandable
 	expandableDescriptionTextbox();
 };
