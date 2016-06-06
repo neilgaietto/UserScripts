@@ -23,7 +23,7 @@ window.abtMaven = (function (mavenlink, $, window, document) {
             var selectedIds = ($(this).val() || "").split(",");
             var isSelected = $.inArray(currentUserId, selectedIds) > -1;
             if (isSelected) {
-                $(this).closest('div.assignees').find('div.readonly').css('color', '#23cf5f');
+                $(this).closest('div.assignees').find('div.readonly').css('color', '#E85342');
             }
         });
     }
@@ -118,31 +118,43 @@ window.abtMaven = (function (mavenlink, $, window, document) {
     return { init: init };
 })(window.Mavenlink, jQuery, window, document);
 
-window.abtMavenTimer = (function () {
+window.abtMavenTimer = (function ($) {
 
     function onTaskLoaded(task) {
-        console.log({ f: 'onTaskLoaded', task });
+        //console.log({ f: 'onTaskLoaded', task });
         //add timer button
+        
+            var btn = $('<div class="iconography"><a class="standard-button" title="Start Timer"><span><span class="icon timer"></span><span>Start Timer</span></span></a></div>');
+            btn.insertBefore('.add-time-action');
+        
     }
 
     function initTimerView() {
-
-        $(document).on('ajaxComplete.task', function (event, xhr, settings) {
-            //if (!taskView.task && settings.url.indexOf('/api/v1/stories/') == 0) {
-                //$(event.currentTarget).off('ajaxComplete.task')
-                //console.log(xhr.responseText);
-                if (!xhr.responseJSON
-                  || !xhr.responseJSON.results
-                  || xhr.responseJSON.results.length != 1) {
-                    return;
-                }
-
-                var resultKey = xhr.responseJSON.results[0];
-                var task = xhr.responseJSON[resultKey.key][resultKey.id];
-
-                onTaskLoaded(task);
-            //}
+        var mut = new MutationObserver(function (mutations, mut) {
+            // if attribute changed === 'class' && 'open' has been added, add css to 'otherDiv'
+            console.log({ mutations, mut });
+            onTaskLoaded();
         });
+        mut.observe(document.querySelector(".spin-view-behavior"), {
+            'attributes': true
+        });
+
+        //$(document).on('ajaxComplete.task', function (event, xhr, settings) {
+        //    if (settings.url.indexOf('/api/v1/stories/') == 0) {
+        //        //$(event.currentTarget).off('ajaxComplete.task')
+        //        //console.log(xhr.responseText);
+        //        if (!xhr.responseJSON
+        //          || !xhr.responseJSON.results
+        //          || xhr.responseJSON.results.length != 1) {
+        //            return;
+        //        }
+
+        //        var resultKey = xhr.responseJSON.results[0];
+        //        var task = xhr.responseJSON[resultKey.key][resultKey.id];
+
+        //        onTaskLoaded(task);
+        //    }
+        //});
     }
 
     function init() {
@@ -156,10 +168,12 @@ window.abtMavenTimer = (function () {
     return {
         init: init
     };
-})();
+})(jQuery);
 
 // ready events
 $(document).ready(function () {
+    console && console.log("ABT Mavenlink Script Loading");
     abtMaven.init();
     abtMavenTimer.init();
 });
+
